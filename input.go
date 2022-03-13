@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -42,4 +43,31 @@ func loadFile(filepath string) (*file, error) {
 	}
 
 	return &file{name: fileInfo.Name(), contents: contents}, nil
+}
+
+func loadStdin() (*file, error) {
+	isEmpty, err := isStdinEmpty()
+	if err != nil {
+		return nil, err
+	}
+
+	if isEmpty {
+		return nil, nil
+	}
+
+	b, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		return nil, fmt.Errorf("error reading from stdin: %w", err)
+	}
+	return &file{name: "stdin", contents: b}, nil
+}
+
+// checks whether stdin is empty to prevent hanging on empty input during read
+// more info: https://stackoverflow.com/a/38612652
+func isStdinEmpty() (bool, error) {
+	stdinInfo, err := os.Stdin.Stat()
+	if err != nil {
+		return true, err
+	}
+	return stdinInfo.Mode()&os.ModeNamedPipe == 0, nil
 }
