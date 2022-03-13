@@ -26,6 +26,25 @@ func mostCommonSequences() error {
 		files = append(files, fromStdin)
 	}
 
-	fmt.Printf("files loaded: %d\n", len(files))
+	for _, f := range files {
+		wgs, err := processFile(f)
+		if err != nil {
+			return fmt.Errorf("error processing file contents: %w", err)
+		}
+		f.SetTop100(wgs)
+	}
+
+	printMostCommonSequences(files)
+
 	return nil
+}
+
+func printMostCommonSequences(files []*file) {
+	for _, f := range files {
+		fmt.Printf("\nResults for %s\n", f.Name())
+		fmt.Println("---------------------------------")
+		for _, wg := range f.GetTop100() {
+			fmt.Printf("%s: %d\n", wg.Text(), wg.Count())
+		}
+	}
 }
