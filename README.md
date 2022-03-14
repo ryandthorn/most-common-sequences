@@ -11,7 +11,7 @@ filepath args: `go run . testfiles/darwin-full.txt`
 
 You also can combine these methods:
 
-`cat testfiles/simple.txt | go run . testfiles/darwin-full.txt
+`cat testfiles/simple.txt | go run . testfiles/darwin-full.txt`
 
 
 
