@@ -5,13 +5,13 @@ Outputs a list of the 100 most common three-word sequences in a given text, alon
 
 Text input can be fed to the program in two ways:
 
-stdin: `cat example.txt | go run .`
+stdin: `cat testfiles/simple.txt | go run .`
 
-filepath args: `go run . example.txt`
+filepath args: `go run . testfiles/darwin-full.txt`
 
 You also can combine these methods:
 
-`cat example1.txt | go run . example2.txt
+`cat testfiles/simple.txt | go run . testfiles/darwin-full.txt
 
 
 
