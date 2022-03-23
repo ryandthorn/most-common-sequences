@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"strings"
+)
+
 type file struct {
 	name     string
 	contents []byte
@@ -28,4 +33,14 @@ func (f *file) SetTop100(wgs []wordGroup) {
 
 func (f *file) GetTop100() []wordGroup {
 	return f.top100
+}
+
+func (f *file) Top100ToString() string {
+	b := strings.Builder{}
+	b.WriteString(fmt.Sprintf("\nResults for %s\n", f.Name()))
+	b.WriteString("---------------------------------\n")
+	for _, wg := range f.GetTop100() {
+		b.WriteString(fmt.Sprintf("%s: %d\n", wg.Text(), wg.Count()))
+	}
+	return b.String()
 }

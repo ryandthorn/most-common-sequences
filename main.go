@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"strings"
 )
 
 func main() {
@@ -17,7 +16,7 @@ func handleTestSimple(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
-	fmt.Fprint(w, stringifyMostCommonSequences(f))
+	fmt.Fprint(w, f.Top100ToString())
 }
 
 func handleTestFull(w http.ResponseWriter, req *http.Request) {
@@ -25,7 +24,7 @@ func handleTestFull(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
-	fmt.Fprint(w, stringifyMostCommonSequences(f))
+	fmt.Fprint(w, f.Top100ToString())
 }
 
 func mostCommonSequences(filepath string) (*file, error) {
@@ -41,18 +40,4 @@ func mostCommonSequences(filepath string) (*file, error) {
 	f.SetTop100(wgs)
 
 	return f, nil
-}
-
-func printMostCommonSequences(f *file) {
-	fmt.Print(stringifyMostCommonSequences(f))
-}
-
-func stringifyMostCommonSequences(f *file) string {
-	b := strings.Builder{}
-	b.WriteString(fmt.Sprintf("\nResults for %s\n", f.Name()))
-	b.WriteString("---------------------------------\n")
-	for _, wg := range f.GetTop100() {
-		b.WriteString(fmt.Sprintf("%s: %d\n", wg.Text(), wg.Count()))
-	}
-	return b.String()
 }
